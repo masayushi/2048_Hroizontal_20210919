@@ -65,11 +65,17 @@ public class Car : MonoBehaviour
     private void Start()
     {
         print("哈囉，初音:D");
-        // 取得欄位資料 ※ 預設值以屬性面板為主 (Inspector)
+        // 取得 Get 欄位資料 ※ 預設值以屬性面板為主 (Inspector)
         // 語法：
         // 欄位名稱
         print("CC 數：" + cc);
         print(weight);
+
+        // 存放 Set 欄位資料
+        // 語法：
+        // 欄位名稱 指定 值：
+        brand = "賓士";
+        cc = 3500;
     }
     #endregion
 
