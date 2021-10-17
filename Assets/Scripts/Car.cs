@@ -57,4 +57,21 @@ public class Car : MonoBehaviour
     public SpriteRenderer sprBox;
     public Camera cam;
     #endregion
+
+    #region 存取欄位資料 Set Get
+
+    // 程式入口：事件
+    // 開始事件：播放遊戲時執行一次，初始設定
+    private void Start()
+    {
+        print("哈囉，初音:D");
+        // 取得欄位資料 ※ 預設值以屬性面板為主 (Inspector)
+        // 語法：
+        // 欄位名稱
+        print("CC 數：" + cc);
+        print(weight);
+    }
+    #endregion
+
+
 }
