@@ -62,6 +62,5 @@ public class LearnProperty : MonoBehaviour
 
         // print(attack);            // 唯寫屬性不能夠放在print內傳回，所以這是錯誤寫法  
         attack = 999.9f;
-
     }
 }
