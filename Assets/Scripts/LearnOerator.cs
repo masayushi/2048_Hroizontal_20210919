@@ -8,7 +8,7 @@ using UnityEngine;
 // 3. 比較
 // 4. 邏輯
 /// <summary>
-/// 
+/// 運算子筆記
 /// </summary>
 public class LearnOperator : MonoBehaviour
 {
@@ -44,6 +44,47 @@ public class LearnOperator : MonoBehaviour
         hp += 10;                         // 適用於所有數學運算子!! ex: += -= *= /= %=
         print("HP 結果：" + hp);
         #endregion
+
+        #region 比較運算子
+        // 大於、小於、大於等於、小於等於、等於、不等於
+        // >、<、>=、<=、==、!=
+        // 比較兩個值，並且得到的結果為布林值
+        print("a > b" + (a > b));         // t
+        print("a < b" + (a < b));         // f
+        print("a >= b" + (a >= b));         // t
+        print("a <= b" + (a <= b));         // f
+        print("a == b" + (a == b));         // f
+        print("a != b" + (a != b));         // t
+        #endregion
+
+        #region 邏輯運算子
+        // 並且、或者、顛倒
+        // && || !
+        // 並且、或者
+        // 比較兩個布林值，並且得到的結果為布林值
+
+        // 並且：只要有一個 f 結果就會是 f 
+        print("t && t" + (true && true));    // t
+        print("f && t" + (false && true));    // f
+        print("t && f" + (true && false));    // f
+        print("f && f" + (false && false));    // f
+
+        // 或者：只要有一個 t 結果就會是 t 
+        print("t || t" + (true || true));    // t
+        print("f || t" + (false || true));    // t
+        print("t || f" + (true || false));    // t
+        print("f || f" + (false || false));    // f
+        // 快速選取快捷鍵：Alt + Shift + > 
+        #endregion
+
+        #region 顛倒運算子
+        // 顛倒：只能加在布林值前面
+        print(!true);                // f
+        print(!(a > b));             // f
+        print(!(true && true));      // f
+        #endregion
+
+
     }
 
 }
