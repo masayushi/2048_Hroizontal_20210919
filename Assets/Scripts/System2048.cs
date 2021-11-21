@@ -4,6 +4,17 @@ using System.Linq;
 // 遊戲主要的邏輯是：先賦予每個操作方塊資料，再用一筆資料統整所有方塊資料(資料夾包住資料的概念)，接著才有辦法使用二維陣列帶入各個方塊內(即便二維陣列能夠處理多筆資料，但是也要用相同類型的資料，或者是將這些不同類型的資料包在一個資料類別內才能夠使用)
 
 /// <summary>
+/// 方向列舉：無、右、左、上、下
+/// </summary>
+public enum Driection
+{
+    None, Right, Left, Up, Down
+}
+
+
+
+
+/// <summary>
 ///  2048 系統，包含：
 ///  儲存每個區塊資料
 ///  管理隨機生成
@@ -19,6 +30,12 @@ public class System2048 : MonoBehaviour
     public GameObject goNumberBlock;
     [Header("畫布 2048")]
     public Transform traCanvas2048;
+
+    /// <summary>
+    /// 私人欄位出現在屬性面板上
+    /// </summary>
+    [SerializeField]
+    private Driection driection;
 
 
     /// <summary>
@@ -46,7 +63,7 @@ public class System2048 : MonoBehaviour
             for (int j = 0; j < blocks.GetLength(1); j++)
             {
                 blocks[i, j] = new BlockData();
-                
+
                 blocks[i, j].v2Index = new Vector2Int(i, j);
 
                 blocks[i, j].v2Position = blocksEmpty[i * blocks.GetLength(1) + j].position;
@@ -68,7 +85,10 @@ public class System2048 : MonoBehaviour
         {
             for (int j = 0; j < blocks.GetLength(1); j++)
             {
-                result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color>" + blocks[i, j].v2Position + "|";
+                // 編號、數字與座標
+                // result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color> <color=green>" + blocks[i, j].v2Position + "</color>|";
+                // 編號、數字與物件
+                result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color> <color=green>" + blocks[i, j].goBlock + "</color>|";
             }
             result += "\n";
         }
@@ -100,11 +120,11 @@ public class System2048 : MonoBehaviour
         printBlockData();
 
         // 實例化(生成)API - (物件，父物件)
-       GameObject tempBlock = Instantiate(goNumberBlock, traCanvas2048);
+        GameObject tempBlock = Instantiate(goNumberBlock, traCanvas2048);
         // 生成區塊 的 指定座標
         tempBlock.transform.position = dataRandom.v2Position;
         // 資料儲存 的 生成區塊
-        dataRandom.boBlock = tempBlock;
+        dataRandom.goBlock = tempBlock;
     }
 
 }
@@ -118,7 +138,7 @@ public class BlockData
     /// <summary>
     /// 區塊內的數字物件
     /// </summary>
-    public GameObject boBlock;
+    public GameObject goBlock;
     /// <summary>
     /// 區塊座標(因為是2D所以用Vector2)
     /// </summary>
