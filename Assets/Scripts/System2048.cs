@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine.UI;
 
 // 遊戲主要的邏輯是：先賦予每個操作方塊資料，再用一筆資料統整所有方塊資料(資料夾包住資料的概念)，接著才有辦法使用二維陣列帶入各個方塊內(即便二維陣列能夠處理多筆資料，但是也要用相同類型的資料，或者是將這些不同類型的資料包在一個資料類別內才能夠使用)
 
@@ -47,7 +47,7 @@ public class System2048 : MonoBehaviour
     // 這邊要套用我們自己設定的資料(BlockData)來讓BlockData的資料變得能夠套用進二維陣列內
     // 之所以用 new BlockData 是因為如果直接用BlockData的話系統會抓到空值
     // [4,4] = 4 x 4 (欄乘列)
-    private BlockData[,] blocks = new BlockData[4, 4];
+    private BlockData[,] blocks = new BlockData[1, 4];
 
     /// <summary>
     /// 點擊、按下時的座標
@@ -235,6 +235,61 @@ public class System2048 : MonoBehaviour
             case Direction.Right:
                 break;
             case Direction.Left:
+                for (int i = 0; i < blocks.GetLength(0); i++)
+                {
+                    for (int j = 0; j < blocks.GetLength(1); j++)
+                    {
+                        BlockData blockOriginal = new BlockData();     // 原始有數字的區塊
+                        BlockData blockCheck = new BlockData();        // 檢查旁邊的區塊
+                        bool canMove = false;                          // 是否可以移動區塊
+                        bool sameNumber = false;                       // 數字是否相同
+                        blockOriginal = blocks[i, j];
+
+                        // 如果 該區塊的數字 為零 就 繼續(跳過此迴圈，執行下一個迴圈)
+                        if (blockOriginal.number == 0) continue;
+
+                        for (int k = j - 1; k >= 0; k--)
+                        {
+                            print("檢查次數：" + k);
+
+                            if (blocks[i, k].number == 0)
+                            {
+                                blockCheck = blocks[i, k];
+                                canMove = true;
+                            }
+                            else if (blocks[i, k].number == blockOriginal.number)
+                            {
+                                blockCheck = blocks[i, k];
+                                canMove = true;
+                                sameNumber = true;
+                            }
+                        }
+                        if (canMove)
+                        {
+                            // 將原本的物件移動到檢查數字為零的區塊位置
+                            // 將原本的數字歸零，檢查數字補上
+                            // 將原本的物件清空，檢查物件補上
+                            blockOriginal.goBlock.transform.position = blockCheck.v2Position;
+
+                            if (sameNumber)
+                            {
+                                int number = blockCheck.number * 2;
+                                blockCheck.number = number;
+
+                                Destroy(blockOriginal.goBlock);
+                                blockCheck.goBlock.transform.Find("數字").GetComponent<Text>().text = number.ToString();
+                            }
+                            else
+                            {
+                                blockCheck.number = blockOriginal.number;
+                                blockCheck.goBlock = blockOriginal.goBlock;
+                            }
+                            blockOriginal.number = 0;
+                            blockOriginal.goBlock = null;
+                        }
+                    }
+                }
+                printBlockData();
                 break;
             case Direction.Up:
                 break;
