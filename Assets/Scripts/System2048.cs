@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 // 遊戲主要的邏輯是：先賦予每個操作方塊資料，再用一筆資料統整所有方塊資料(資料夾包住資料的概念)，接著才有辦法使用二維陣列帶入各個方塊內(即便二維陣列能夠處理多筆資料，但是也要用相同類型的資料，或者是將這些不同類型的資料包在一個資料類別內才能夠使用)
 
 /// <summary>
 /// 方向列舉：無、右、左、上、下
 /// </summary>
-public enum Driection
+public enum Direction
 {
     None, Right, Left, Up, Down
 }
@@ -24,34 +25,60 @@ public enum Driection
 /// </summary>
 public class System2048 : MonoBehaviour
 {
+    #region 公開欄位
     [Header("底圖區塊")]
     public Transform[] blocksEmpty;
     [Header("數字區塊")]
     public GameObject goNumberBlock;
     [Header("畫布 2048")]
     public Transform traCanvas2048;
+    #endregion
 
+    #region 私人欄位
     /// <summary>
     /// 私人欄位出現在屬性面板上
     /// </summary>
     [SerializeField]
-    private Driection driection;
-
+    private Direction direction;
 
     /// <summary>
     /// 所有區塊資料
     /// </summary>
-
     // 這邊要套用我們自己設定的資料(BlockData)來讓BlockData的資料變得能夠套用進二維陣列內
     // 之所以用 new BlockData 是因為如果直接用BlockData的話系統會抓到空值
     // [4,4] = 4 x 4 (欄乘列)
-    public BlockData[,] blocks = new BlockData[4, 4];
+    private BlockData[,] blocks = new BlockData[4, 4];
 
+    /// <summary>
+    /// 點擊、按下時的座標
+    /// </summary>
+    private Vector3 posDown;
+
+    /// <summary>
+    /// 放開時的座標
+    /// </summary>
+    private Vector3 posUp;
+
+    /// <summary>
+    /// 是否按下左鍵
+    /// </summary>
+    private bool isClinkMouse;
+    #endregion
+
+
+    #region 事件
     private void Start()
     {
         Initialize();
     }
 
+    private void Update()
+    {
+        CheckDirection();
+    }
+    #endregion
+
+    #region 私人方法
     /// <summary>
     /// 初始化資料
     /// Initialize = 初始化
@@ -127,6 +154,63 @@ public class System2048 : MonoBehaviour
         dataRandom.goBlock = tempBlock;
     }
 
+    private void CheckDirection()
+    {
+        #region 鍵盤控制
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            direction = Direction.Up;
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            direction = Direction.Left;
+        }
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            direction = Direction.Down;
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            direction = Direction.Right;
+        }
+        #endregion
+
+        #region 滑鼠、觸控控制
+        if (!isClinkMouse && Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            isClinkMouse = true;
+            posDown = Input.mousePosition;
+            print("按下後的座標：" + posDown);
+        }
+        else if (isClinkMouse && Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            isClinkMouse = false;
+            posUp = Input.mousePosition;
+            print("放開後的座標：" + posUp);
+
+            // 1. 計算向量值 放開時的座標 - 按下後的座標
+            Vector3 directionValue = posUp - posDown;
+            print("向量值：" + directionValue);
+            // 2. 轉換成 0 ~ 1 的值
+            print("轉換後的值：" + directionValue.normalized);
+
+            // 方向 X 與方向 Y 取絕對值
+            float xAbs = Mathf.Abs(directionValue.x);
+            float yAbs = Mathf.Abs(directionValue.y);
+            // 如果 X > Y 就會為水平方向
+            if (xAbs > yAbs)
+            {
+                print("水平方向");
+            }
+            // 如果 Y > X 就會為垂直方向
+            else if (yAbs > xAbs)
+            {
+                print("垂直方向");
+            }
+        }
+        #endregion
+    }
+    #endregion
 }
 
 /// <summary>
