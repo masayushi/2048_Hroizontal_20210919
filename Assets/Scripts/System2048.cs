@@ -115,7 +115,12 @@ public class System2048 : MonoBehaviour
                 // 編號、數字與座標
                 // result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color> <color=green>" + blocks[i, j].v2Position + "</color>|";
                 // 編號、數字與物件
-                result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color> <color=green>" + blocks[i, j].goBlock + "</color>|";
+
+                // 三元運算子
+                // 語法：布林值 ? 值 A ： 值B;
+                // 當布林值為 true 結果為 值 A
+                // 當布林值為 false 結果為 值 B
+                result += "編號" + blocks[i, j].v2Index + "<color=red>數字：" + blocks[i, j].number + "</color> <color=green>" + (blocks[i, j].goBlock ? "有" : "一") + "</color>|";
             }
             result += "\n";
         }
@@ -144,7 +149,6 @@ public class System2048 : MonoBehaviour
         BlockData dataRandom = blocks[equalZero.ToArray()[randomIndex].v2Index.x, equalZero.ToArray()[randomIndex].v2Index.y];
         //將數字 2 輸入到隨機區塊內 值得注意的是 第一顆方塊的編號也是 0 ，所以直接算的話要再+1!
         dataRandom.number = 2;
-        printBlockData();
 
         // 實例化(生成)API - (物件，父物件)
         GameObject tempBlock = Instantiate(goNumberBlock, traCanvas2048);
@@ -152,6 +156,7 @@ public class System2048 : MonoBehaviour
         tempBlock.transform.position = dataRandom.v2Position;
         // 資料儲存 的 生成區塊
         dataRandom.goBlock = tempBlock;
+        printBlockData();
     }
 
     private void CheckDirection()
@@ -160,18 +165,22 @@ public class System2048 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             direction = Direction.Up;
+            CheckAndMoveBlock();
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             direction = Direction.Left;
+            CheckAndMoveBlock();
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             direction = Direction.Down;
+            CheckAndMoveBlock();
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             direction = Direction.Right;
+            CheckAndMoveBlock();
         }
         #endregion
 
@@ -195,23 +204,47 @@ public class System2048 : MonoBehaviour
             print("轉換後的值：" + directionValue.normalized);
 
             // 方向 X 與方向 Y 取絕對值
-            float xAbs = Mathf.Abs(directionValue.x);
-            float yAbs = Mathf.Abs(directionValue.y);
+            float xAbs = Mathf.Abs(directionValue.normalized.x);
+            float yAbs = Mathf.Abs(directionValue.normalized.y);
             // 如果 X > Y 就會為水平方向
             if (xAbs > yAbs)
             {
-                print("水平方向");
+                if (directionValue.normalized.x > 0) direction = Direction.Right;
+                else direction = Direction.Left;
+                CheckAndMoveBlock();
             }
             // 如果 Y > X 就會為垂直方向
             else if (yAbs > xAbs)
             {
-                print("垂直方向");
+                if (directionValue.normalized.y > 0) direction = Direction.Up;
+                else direction = Direction.Down;
+                CheckAndMoveBlock();
             }
         }
         #endregion
     }
+
+    /// <summary>
+    /// 檢查並移動區塊
+    /// </summary>
+    private void CheckAndMoveBlock()
+    {
+        print("目前的方向：" + direction);
+        switch (direction)
+        {
+            case Direction.Right:
+                break;
+            case Direction.Left:
+                break;
+            case Direction.Up:
+                break;
+            case Direction.Down:
+                break;
+        }
+    }
     #endregion
 }
+
 
 /// <summary>
 /// 操作區的方塊資料
