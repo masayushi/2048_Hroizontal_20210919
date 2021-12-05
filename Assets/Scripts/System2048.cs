@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.Events;  // 引用 Unity 事件 命名空間
 
 // 遊戲主要的邏輯是：先賦予每個操作方塊資料，再用一筆資料統整所有方塊資料(資料夾包住資料的概念)，接著才有辦法使用二維陣列帶入各個方塊內(即便二維陣列能夠處理多筆資料，但是也要用相同類型的資料，或者是將這些不同類型的資料包在一個資料類別內才能夠使用)
 
@@ -32,6 +33,8 @@ public class System2048 : MonoBehaviour
     public GameObject goNumberBlock;
     [Header("畫布 2048")]
     public Transform traCanvas2048;
+    [Header("數字相同合併事件")]
+    public UnityEvent onSameNumberCombine;
     #endregion
 
     #region 私人欄位
@@ -266,16 +269,20 @@ public class System2048 : MonoBehaviour
                             // 否則 如果 檢查區塊 的數字 與 原本區塊 的數字 不相同 就不移動、數字不相同並中斷
                             else if (blocks[i, k].number != blockOriginal.number)
                             {
-                                canMove = false;
-                                sameNumber = false;
                                 break;
                             }
                         }
-                        if (canMove) MoveBlock(blockOriginal, blockCheck, sameNumber);
+                        if (canMove)
+                        {
+                            canMove = false;
+                            MoveBlock(blockOriginal, blockCheck, sameNumber);
+                            sameNumber = false;
+                        }
                     }
                 }
 
                 break;
+
             case Direction.Left:
 
                 for (int i = 0; i < blocks.GetLength(0); i++)
@@ -302,8 +309,17 @@ public class System2048 : MonoBehaviour
                                 canMove = true;
                                 sameNumber = true;
                             }
+                            else if (blocks[i, k].number != blockOriginal.number)
+                            {
+                                break;
+                            }
                         }
-                        if (canMove) MoveBlock(blockOriginal, blockCheck, sameNumber);
+                        if (canMove)
+                        {
+                            canMove = false;
+                            MoveBlock(blockOriginal, blockCheck, sameNumber);
+                            sameNumber = false;
+                        }
                     }
                 }
 
@@ -334,8 +350,17 @@ public class System2048 : MonoBehaviour
                                 canMove = true;
                                 sameNumber = true;
                             }
+                            else if (blocks[k, i].number != blockOriginal.number)
+                            {
+                                break;
+                            }
                         }
-                        if (canMove) MoveBlock(blockOriginal, blockCheck, sameNumber);
+                        if (canMove)
+                        {
+                            canMove = false;
+                            MoveBlock(blockOriginal, blockCheck, sameNumber);
+                            sameNumber = false;
+                        }
                     }
                 }
 
@@ -366,8 +391,17 @@ public class System2048 : MonoBehaviour
                                 canMove = true;
                                 sameNumber = true;
                             }
+                            else if (blocks[k, i].number != blockOriginal.number)
+                            {
+                                break;
+                            }
                         }
-                        if (canMove) MoveBlock(blockOriginal, blockCheck, sameNumber);
+                        if (canMove)
+                        {
+                            canMove = false;
+                            MoveBlock(blockOriginal, blockCheck, sameNumber);
+                            sameNumber = false;
+                        }
                     }
                 }
 
@@ -399,6 +433,9 @@ public class System2048 : MonoBehaviour
 
             Destroy(blockOriginal.goBlock);
             blockCheck.goBlock.transform.Find("數字").GetComponent<Text>().text = number.ToString();
+
+            // 相同數字合併事件 觸發
+            onSameNumberCombine.Invoke();
         }
         else
         {
