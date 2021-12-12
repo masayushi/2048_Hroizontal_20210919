@@ -237,6 +237,7 @@ public class System2048 : MonoBehaviour
         BlockData blockCheck = new BlockData();        // 檢查旁邊的區塊
         bool canMove = false;                          // 是否可以移動區塊
         bool sameNumber = false;                       // 數字是否相同
+        int sameNumberCount = 0;                       // 相同數字合併次數
 
         switch (direction)
         {
@@ -244,6 +245,8 @@ public class System2048 : MonoBehaviour
 
                 for (int i = 0; i < blocks.GetLength(0); i++)
                 {
+                    sameNumberCount = 0;
+
                     for (int j = blocks.GetLength(1) - 2; j >= 0; j--)
                     {
 
@@ -252,7 +255,7 @@ public class System2048 : MonoBehaviour
                         // 如果 該區塊的數字 為零 就 繼續(跳過此迴圈，執行下一個迴圈)
                         if (blockOriginal.number == 0) continue;
 
-                        for (int k = j + 1; k < blocks.GetLength(1); k++)
+                        for (int k = j + 1; k < blocks.GetLength(1) - sameNumberCount; k++)
                         {
                             if (blocks[i, k].number == 0)
                             {
@@ -264,6 +267,7 @@ public class System2048 : MonoBehaviour
                                 blockCheck = blocks[i, k];
                                 canMove = true;
                                 sameNumber = true;
+                                sameNumberCount++;
                             }
 
                             // 否則 如果 檢查區塊 的數字 與 原本區塊 的數字 不相同 就不移動、數字不相同並中斷
@@ -287,6 +291,9 @@ public class System2048 : MonoBehaviour
 
                 for (int i = 0; i < blocks.GetLength(0); i++)
                 {
+
+                    sameNumberCount = 0;
+
                     for (int j = 1; j < blocks.GetLength(1); j++)
                     {
 
@@ -295,7 +302,7 @@ public class System2048 : MonoBehaviour
                         // 如果 該區塊的數字 為零 就 繼續(跳過此迴圈，執行下一個迴圈)
                         if (blockOriginal.number == 0) continue;
 
-                        for (int k = j - 1; k >= 0; k--)
+                        for (int k = j - 1; k >= 0 + sameNumberCount; k--)
                         {
 
                             if (blocks[i, k].number == 0)
@@ -308,6 +315,7 @@ public class System2048 : MonoBehaviour
                                 blockCheck = blocks[i, k];
                                 canMove = true;
                                 sameNumber = true;
+                                sameNumberCount++;
                             }
                             else if (blocks[i, k].number != blockOriginal.number)
                             {
@@ -328,6 +336,8 @@ public class System2048 : MonoBehaviour
 
                 for (int i = 0; i < blocks.GetLength(1); i++)
                 {
+                    sameNumberCount = 0;
+
                     for (int j = 1; j < blocks.GetLength(0); j++)
                     {
 
@@ -336,7 +346,7 @@ public class System2048 : MonoBehaviour
                         // 如果 該區塊的數字 為零 就 繼續(跳過此迴圈，執行下一個迴圈)
                         if (blockOriginal.number == 0) continue;
 
-                        for (int k = j - 1; k >= 0; k--)
+                        for (int k = j - 1; k >= 0 + sameNumberCount; k--)
                         {
 
                             if (blocks[k, i].number == 0)
@@ -349,6 +359,7 @@ public class System2048 : MonoBehaviour
                                 blockCheck = blocks[k, i];
                                 canMove = true;
                                 sameNumber = true;
+                                sameNumberCount++;
                             }
                             else if (blocks[k, i].number != blockOriginal.number)
                             {
@@ -369,6 +380,8 @@ public class System2048 : MonoBehaviour
 
                 for (int i = 0; i < blocks.GetLength(1); i++)
                 {
+                    sameNumberCount = 0;
+
                     for (int j = blocks.GetLength(0) - 2; j >= 0; j--)
                     {
 
@@ -377,7 +390,7 @@ public class System2048 : MonoBehaviour
                         // 如果 該區塊的數字 為零 就 繼續(跳過此迴圈，執行下一個迴圈)
                         if (blockOriginal.number == 0) continue;
 
-                        for (int k = j + 1; k < blocks.GetLength(0); k++)
+                        for (int k = j + 1; k < blocks.GetLength(0) - sameNumberCount; k++)
                         {
 
                             if (blocks[k, i].number == 0)
@@ -390,6 +403,7 @@ public class System2048 : MonoBehaviour
                                 blockCheck = blocks[k, i];
                                 canMove = true;
                                 sameNumber = true;
+                                sameNumberCount++;
                             }
                             else if (blocks[k, i].number != blockOriginal.number)
                             {

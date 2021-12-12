@@ -17,7 +17,8 @@ public class AttackSystem : MonoBehaviour
     /// <summary>
     /// 攻擊方法
     /// </summary>
-    public void Attack()
+    // virtual 虛擬：允許子類別複寫
+    public virtual void Attack()
     {
         print("發動攻擊，攻擊力為：" + attack);
     }
