@@ -6224,3 +6224,4 @@ Received Import Request.
 Start importing Assets/Scripts/LearnOperator.cs using Guid(9b2ea67fb6c934b498b4f9506473f1f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd62f425ff8686b2b107f3c58f795211f') in 0.004010 seconds 
   Import took 0.007160 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
