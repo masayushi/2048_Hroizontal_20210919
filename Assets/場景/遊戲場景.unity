@@ -1755,9 +1755,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d8af4238e19c44e92c2076c1680bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 50
+  attack: 25
   goTarget: {fileID: 412709223}
   textAttack: {fileID: 497760771}
+  delayAttack: 2
+  delaySendDamage: 0.5
+  parameterAttack: "\u653B\u64CA\u89F8\u767C"
+  onAttackFinish:
+    m_PersistentCalls:
+      m_Calls: []
   positionSpawn: {fileID: 1723156514}
   goAttackParticle: {fileID: 5939421977397188072, guid: 955f2850d37151c45835c9d6cd119cd7, type: 3}
   speed: 500
@@ -1773,9 +1779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642abc86abb7f26439d33a69005c8efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
-  textHp: {fileID: 2141475379}
-  imgHp: {fileID: 1994158066}
+  hp: 150
+  textHp: {fileID: 606770088}
+  imgHp: {fileID: 55835905}
   tagDamageObject: 
   parameterDamage: "\u53D7\u50B7\u89F8\u767C"
   parameterDead: "\u6B7B\u4EA1\u89F8\u767C"
@@ -2143,7 +2149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 642abc86abb7f26439d33a69005c8efd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 350
   textHp: {fileID: 2141475379}
   imgHp: {fileID: 413372418}
   tagDamageObject: "\u7403"
@@ -2164,6 +2170,24 @@ MonoBehaviour:
   attack: 35
   goTarget: {fileID: 155488107}
   textAttack: {fileID: 1118932759}
+  delayAttack: 2
+  delaySendDamage: 0.5
+  parameterAttack: "\u653B\u64CA\u89F8\u767C"
+  onAttackFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1343152523}
+        m_TargetAssemblyTypeName: System2048, Assembly-CSharp
+        m_MethodName: ChangeToMyTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &413372416
 GameObject:
   m_ObjectHideFlags: 0
@@ -4903,8 +4927,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  direction: 4
-  stateTurn: 1
+  direction: 0
+  stateTurn: 0
+  onEnemyTurn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 412709230}
+        m_TargetAssemblyTypeName: AttackSystem, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1343152524
 Transform:
   m_ObjectHideFlags: 0

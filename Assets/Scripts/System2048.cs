@@ -237,6 +237,9 @@ public class System2048 : MonoBehaviour
         #endregion
     }
 
+    [Header("敵人回合事件")]
+    public UnityEvent onEnemyTurn;
+
     /// <summary>
     /// 檢查並移動區塊
     /// </summary>
@@ -439,6 +442,7 @@ public class System2048 : MonoBehaviour
 
         if (canMoveBlockAll)                     // 移動後生成下一顆區塊
         {
+            onEnemyTurn.Invoke();
             stateTurn = StateTurn.Enemy;
             CreateRandomNumberBlock();
         }
@@ -446,6 +450,13 @@ public class System2048 : MonoBehaviour
         {
             print("不能移動");
         }
+    }
+    #endregion
+
+    #region 公開方法
+    public void ChangeToMyTurn()
+    {
+        stateTurn = StateTurn.My;
     }
     #endregion
 
