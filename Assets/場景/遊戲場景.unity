@@ -1755,8 +1755,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d8af4238e19c44e92c2076c1680bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 10
+  attack: 50
   goTarget: {fileID: 412709223}
+  textAttack: {fileID: 497760771}
   positionSpawn: {fileID: 1723156514}
   goAttackParticle: {fileID: 5939421977397188072, guid: 955f2850d37151c45835c9d6cd119cd7, type: 3}
   speed: 500
@@ -1776,6 +1777,8 @@ MonoBehaviour:
   textHp: {fileID: 2141475379}
   imgHp: {fileID: 1994158066}
   tagDamageObject: 
+  parameterDamage: "\u53D7\u50B7\u89F8\u767C"
+  parameterDead: "\u6B7B\u4EA1\u89F8\u767C"
 --- !u!1001 &231353491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1999,6 +2002,7 @@ GameObject:
   - component: {fileID: 412709228}
   - component: {fileID: 412709229}
   - component: {fileID: 412709227}
+  - component: {fileID: 412709230}
   m_Layer: 0
   m_Name: "\u963F\u9AA8"
   m_TagString: Untagged
@@ -2143,6 +2147,23 @@ MonoBehaviour:
   textHp: {fileID: 2141475379}
   imgHp: {fileID: 413372418}
   tagDamageObject: "\u7403"
+  parameterDamage: "\u53D7\u50B7\u89F8\u767C"
+  parameterDead: "\u6B7B\u4EA1\u89F8\u767C"
+--- !u!114 &412709230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412709223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9f226da249984b41b1719ea7d6cc5d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack: 35
+  goTarget: {fileID: 155488107}
+  textAttack: {fileID: 1118932759}
 --- !u!1 &413372416
 GameObject:
   m_ObjectHideFlags: 0
@@ -4882,7 +4903,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  direction: 0
+  direction: 4
+  stateTurn: 1
 --- !u!4 &1343152524
 Transform:
   m_ObjectHideFlags: 0
