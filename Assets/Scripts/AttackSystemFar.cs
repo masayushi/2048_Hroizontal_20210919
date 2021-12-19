@@ -16,9 +16,11 @@ public class AttackSystemFar : AttackSystem
     public float speed = 500;
 
     // override 複寫：複寫父類別 virtual 成員
-    public override void Attack()
+    public override void Attack(float increase = 0)
     {
         // base.Attack();      // base 基底：父類別的內容
+
+        onAttackStart.Invoke();
 
         // 生成(物件，座標，角度)
         // 生成的物件名稱後方會有(clone)
@@ -28,6 +30,8 @@ public class AttackSystemFar : AttackSystem
         tempAttack.GetComponent<Rigidbody2D>().AddForce(new Vector2(speed, 0));
 
         // 添加元件<子彈系統>().攻擊力 = 此攻擊系統攻擊力
-        tempAttack.AddComponent<Bullet>().attack = attack;
+        tempAttack.AddComponent<Bullet>().attack = attack + increase;
+
+        print("本次攻擊力：" + (attack + increase));
     }
 }

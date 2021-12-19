@@ -42,28 +42,53 @@ public class AttackSystem : MonoBehaviour
     }
     #endregion
 
+    [Header("攻擊開始事件")]
+    public UnityEvent onAttackStart;
+
     [Header("攻擊完成事件")]
     public UnityEvent onAttackFinish;
 
+    private bool isStop;
+
     #region 公開方法
+
+    /// <summary>
+    /// 停止攻擊
+    /// </summary>
+    public void StopAttack()
+    {
+        isStop = true;          // 已經停止
+        StopAllCoroutines();    // 停止所有協程
+        enabled = false;        // 關閉腳本
+    }
+
+    // virtual 虛擬：允許子類別複寫
     /// <summary>
     /// 攻擊方法
     /// </summary>
-    // virtual 虛擬：允許子類別複寫
-    public virtual void Attack()
+    public virtual void Attack(float increase = 0)
     {
+        if (isStop) return;     // 如果 停止 就跳出
+
         // 啟動  協同程序
         StartCoroutine(DelayAttack());
     }
 
     private IEnumerator DelayAttack()
     {
+
         // 延遲攻擊 1 秒
         yield return new WaitForSeconds(delayAttack);
+
         // 攻擊動畫
         ani.SetTrigger(parameterAttack);
+
         // 延遲 0.5 秒
         yield return new WaitForSeconds(delaySendDamage);
+
+        // 目的是要讓開始攻擊的音效延遲
+        onAttackStart.Invoke();
+
         // 傳送傷害
         targetHealthSystem.Hurt(attack);
         onAttackFinish.Invoke();
